@@ -118,7 +118,8 @@ nav ul li:last-child {
   display: flex;
 }
 
-.App-Video-Player-Wrapper ul.video-debug li {
+.App-Video-Player-Wrapper ul.video-debug li,
+.App-Video-Player-Wrapper ul.video-info li {
   text-overflow: ellipsis;
   width: 100%;
   overflow: hidden;
@@ -147,4 +148,84 @@ nav ul li:last-child {
   width: 100%;
   height: auto;
   background: #15161a;
+}
+
+.video-details-header h1 {
+  margin: 0px;
+  font-size: 3.3rem;
+  line-height: 1;
+  color: #b1afaf;
+}
+
+.video-details-header {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.magnet-info-block {
+  background: #15161a;
+  border-radius: 14px;
+  align-items: center;
+}
+
+.magnet-info-block .magnet-info-magnet {
+  flex: 0 auto;
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-right: 1px solid #5d6a73;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  align-items: center;
+}
+
+.magnet-info-block .magnet-info-stats {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.magnet-info-block .magnet-info-stats .magnet-info-stat {
+  display: flex;
+  font-size: 12px;
+  align-items: center;
+}
+
+.magnet-info-block .magnet-info-stats .magnet-info-stat .icon {
+  margin-right: 5px;
+}
+
+.video-details-footer .column.column-20 button {
+  float: right;
+  margin: 0px;
+}
+
+.video-description {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 20px;
+  border-top: 1px dotted #5e6b74;
+}
+
+.avatar-icon {
+  background: #8792e5;
+  padding: 10px 10px;
+  border-radius: 14px;
+  color: #15161a;
+}
+
+.video-info-avatar .avatar-icon {
+  margin-right: 10px;
+}
+
+.video-info-avatar .avatar-details span {
+  width: 100%;
+  display: inline-block;
+}
+
+.video-info-avatar .avatar-details span.name {
+  color: #b1afaf;
+}
+
+.video-details-header .row {
+  align-items: center;
 }
