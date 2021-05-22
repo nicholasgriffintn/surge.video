@@ -142,3 +142,9 @@ nav ul li:last-child {
   overflow: scroll;
   padding: 10px 20px;
 }
+
+.App-Video-Player-Inner video {
+  width: 100%;
+  height: auto;
+  background: #15161a;
+}

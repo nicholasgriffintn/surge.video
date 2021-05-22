@@ -16,6 +16,7 @@ export default function VideoPlayer(props) {
   const [playerTotalDownloadSizeCount, setPlayerTotalDownloadSize] =
     useState(null);
   const [playerDownloadTime, setPlayerDownloadTime] = useState(null);
+  const [playerDownloadSpeed, setPlayerDownloadSpeed] = useState(null);
 
   var torrentId = props.torrentId;
 
@@ -33,39 +34,79 @@ export default function VideoPlayer(props) {
       client.add(torrentId, (torrent) => {
         setPlayerState('downloading');
 
-        const interval = setInterval(() => {
+        torrent.on('download', function (bytes) {
           setPlayerDownloadProgess((torrent.progress * 100).toFixed(1));
           setPlayerPeersCount(torrent.numPeers);
           setPlayerDownloadedSize((torrent.downloaded * 100).toFixed(1));
           setPlayerTotalDownloadSize((torrent.length * 100).toFixed(1));
           setPlayerDownloadTime((torrent.timeRemaining * 100).toFixed(1));
-        }, 5000);
+          setPlayerDownloadSpeed((torrent.downloadSpeed * 100).toFixed(1));
+
+          setPlayerURL(torrent.torrentFileBlobURL);
+        });
+
+        torrent.on('wire', function (wire, addr) {
+          console.debug('connected to peer with address ' + addr);
+        });
+
+        torrent.on('infoHash', function () {
+          console.debug('InfoHash Event Triggered.');
+        });
+
+        torrent.on('metadata', function () {
+          console.debug('Metadata Event Triggered.');
+          setTorrentData({
+            torrentInfoHash: torrent.infoHash,
+            torrentMagnetURI: torrent.magnetURI,
+            torrentName: torrent.name,
+            torrentFiles: torrent.files,
+          });
+
+          torrent.files.forEach(function (file) {
+            if (file.name.endsWith('.mp4')) {
+              console.debug('Video file found => ', file);
+              setPlayerFile(file);
+              file.renderTo('#VideoPlayer');
+              /* file.appendTo(
+                        '#VideoPlayerRender',
+                        {
+                          autoplay: true,
+                          controls: true,
+                        },
+                        function (err, elem) {
+                          if (err) console.error(err);
+                          console.log('New DOM node with the content', elem);
+                        }
+                      ); */
+              /* file.getBlobURL(function (err, url) {
+                          if (err) console.error(err);
+                          console.log(url);
+                          setPlayerURL(url);
+                        }); */
+            } else if (file.name.endsWith('.jpg')) {
+              setPlayerPosterFile(file);
+            }
+          });
+        });
 
         torrent.on('done', () => {
+          console.debug('Done Event Triggered.');
+
           setPlayerState('downloaded');
           setPlayerDownloadProgess(100);
           clearInterval(interval);
         });
 
-        torrent.files.forEach(function (file) {
-          if (file.name.endsWith('.mp4')) {
-            console.debug('Video file found => ', file);
-            setPlayerFile(file);
-            file.getBlobURL(function (err, url) {
-              if (err) console.error(err);
-              console.log(url);
-              setPlayerURL(url);
-            });
-          } else if (file.name.endsWith('.jpg')) {
-            setPlayerPosterFile(file);
-          }
+        torrent.on('warning', (error) => {
+          console.debug('Warning Event Triggered.');
+          console.debug(error);
         });
 
-        setTorrentData({
-          torrentInfoHash: torrent.infoHash,
-          torrentMagnetURI: torrent.magnetURI,
-          torrentName: torrent.name,
-          torrentFiles: torrent.files,
+        torrent.on('error', (error) => {
+          console.debug('Error Event Triggered.');
+          console.error(error);
+
+          setPlayerError(error.message);
         });
       });
     } else {
@@ -82,7 +123,7 @@ export default function VideoPlayer(props) {
         </div>
       ) : (
         <>
-          {playerFile && (
+          {/* {playerURL && (
             <>
               <ReactPlayer
                 url={playerURL}
@@ -92,7 +133,20 @@ export default function VideoPlayer(props) {
                 controls={true}
               />
             </>
-          )}
+          )} */}
+          {/* <div
+            id="VideoPlayerRender"
+            style={{ width: '100%', height: '640px' }}
+          ></div> */}
+          <video
+            poster={playerPosterFile ? playerPosterFile.path : null}
+            src=""
+            style={{ width: '100%' }}
+            id="VideoPlayer"
+            autoPlay={true}
+            preload="auto"
+            controls=""
+          ></video>
           <ul className="video-debug">
             <li>Torrent ID: {torrentId}</li>
             <li>Player State: {playerState}</li>
@@ -103,6 +157,7 @@ export default function VideoPlayer(props) {
             <li>Player Download Size: {playerDownloadSizeCount}</li>
             <li>Player Total Download Size: {playerTotalDownloadSizeCount}</li>
             <li>Player Download Time: {playerDownloadTime}</li>
+            <li>Player Download Speed: {playerDownloadSpeed}</li>
           </ul>
         </>
       )}
