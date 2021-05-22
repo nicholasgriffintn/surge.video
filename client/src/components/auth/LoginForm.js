@@ -4,9 +4,6 @@ import { compose, withStateHandlers } from 'recompose';
 import { setAuthStatus, login } from '../../store/actions/session';
 import { bindActionCreators } from 'redux';
 
-import { Heading, Button } from 'rebass';
-import { Label, Input } from '@rebass/forms';
-
 import ErrorMessage from './ErrorMessage';
 
 const LoginForm = ({
@@ -21,9 +18,7 @@ const LoginForm = ({
   <div className="auth_main">
     <div className="auth_card">
       <div className="auth_title">
-        <Heading fontSize={[6]} color="primary">
-          Sign in to start sharing today
-        </Heading>
+        <h1>Sign in to start sharing today</h1>
         <p>Enter your credentials below to sign in</p>
       </div>
       <form
@@ -33,11 +28,11 @@ const LoginForm = ({
           login(inputs.username, inputs.password);
         }}
       >
-        <div className="auth_form_wrap">
+        <fieldset className="auth_form_wrap">
           <ErrorMessage errorMessage={error} />
           <div className="auth_form_input">
-            <Label htmlFor="username">Username</Label>
-            <Input
+            <label htmlFor="username">Username</label>
+            <input
               required
               id="username"
               name="username"
@@ -48,8 +43,8 @@ const LoginForm = ({
             />
           </div>
           <div className="auth_form_input">
-            <Label htmlFor="password">Password</Label>
-            <Input
+            <label htmlFor="password">Password</label>
+            <input
               required
               id="password"
               name="password"
@@ -61,20 +56,20 @@ const LoginForm = ({
             />
           </div>
           <div className="auth_card_actions">
-            <Button className="btn btn-primary btn-full" type="submit">
+            <button className="button btn-primary btn-full" type="submit">
               Login
-            </Button>
+            </button>
           </div>
           <div className="auth_card_actions">
-            <Button
-              className="btn btn-secondary btn-full"
+            <button
+              className="button button-outline btn-full"
               type="button"
               onClick={() => setAuthStatus('forgotPassword')}
             >
               Forgot your password?
-            </Button>
+            </button>
           </div>
-        </div>
+        </fieldset>
       </form>
     </div>
   </div>

@@ -24,9 +24,7 @@ const ResetPasswordForm = ({
   <div className="auth_main">
     <div className="auth_card">
       <div className="auth_title">
-        <Heading fontSize={[6]} color="primary">
-          Reset your password
-        </Heading>
+        <h1>Reset your password</h1>
         <p>Fill in the form below to reset your password</p>
       </div>
       <ErrorMessage errorMessage={error} />
@@ -37,10 +35,10 @@ const ResetPasswordForm = ({
           resetPassword(inputs.username, inputs.code, inputs.newPassword);
         }}
       >
-        <div className="auth_form_wrap">
+        <fieldset className="auth_form_wrap">
           <div className="auth_form_input">
-            <Label htmlFor="username">Username</Label>
-            <Input
+            <label htmlFor="username">Username</label>
+            <input
               required
               id="username"
               name="username"
@@ -51,7 +49,7 @@ const ResetPasswordForm = ({
             />
           </div>
           <div className="auth_form_input">
-            <Label htmlFor="codde">Reset Code</Label>
+            <label htmlFor="codde">Reset Code</label>
             <input
               required
               id="code"
@@ -63,7 +61,7 @@ const ResetPasswordForm = ({
             />
           </div>
           <div className="auth_form_input">
-            <Label htmlFor="newPassword">New Password</Label>
+            <label htmlFor="newPassword">New Password</label>
             <input
               required
               id="new-password"
@@ -76,20 +74,20 @@ const ResetPasswordForm = ({
             />
           </div>
           <div className="auth_card_actions">
-            <Button className="btn btn-primary btn-full" type="submit">
+            <button className="button btn-primary btn-full" type="submit">
               Reset
-            </Button>
+            </button>
           </div>
           <div className="auth_card_actions">
-            <Button
-              className="btn btn-secondary btn-full"
+            <button
+              className="button button-outline btn-full"
               type="button"
               onClick={() => setAuthStatus('signIn')}
             >
               Remembered your password?
-            </Button>
+            </button>
           </div>
-        </div>
+        </fieldset>
       </form>
     </div>
   </div>

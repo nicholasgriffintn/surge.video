@@ -3,7 +3,12 @@ import { Provider } from 'react-redux';
 import './App.css';
 import store from './store';
 import { ThemeProvider } from '@emotion/react';
-import theme from '@rebass/preset';
+
+const theme = {
+  colors: {
+    primary: '#8792e5',
+  },
+};
 
 import AppInner from './App_Inner';
 class App extends Component {

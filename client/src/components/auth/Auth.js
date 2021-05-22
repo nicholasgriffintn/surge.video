@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Box } from 'rebass';
-
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import LoginForm from './LoginForm';
@@ -17,12 +15,12 @@ const Auth = ({ header, logoText, authState }) => (
   <>
     {!header ? (
       <div className="homepage_na">
-        <Box
-          className="auth_box"
-          sx={{
-            maxWidth: 512,
-            mx: 'auto',
-            px: 3,
+        <div
+          className="box auth_box"
+          style={{
+            maxWidth: 640,
+            margin: 'auto',
+            padding: 3,
           }}
         >
           {authState.authStatus === 'signIn' ? (
@@ -45,7 +43,7 @@ const Auth = ({ header, logoText, authState }) => (
           ) : (
             <></>
           )}
-        </Box>
+        </div>
       </div>
     ) : (
       <button className="btn btn-primary btn-header-signin">Sign In</button>

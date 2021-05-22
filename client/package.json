@@ -5,8 +5,6 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.4.0",
-    "@rebass/forms": "^4.0.6",
-    "@rebass/preset": "^4.0.5",
     "aws-amplify": "^4.0.2",
     "lodash": "^4.17.21",
     "prop-types": "^15.7.2",
@@ -15,7 +13,6 @@
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "rebass": "^4.0.7",
     "recompose": "^0.30.0",
     "redux": "^4.1.0",
     "redux-saga": "^1.1.3",

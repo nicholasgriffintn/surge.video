@@ -97,3 +97,23 @@ nav ul li {
 nav ul li:last-child {
   margin-right: 0px;
 }
+
+.box {
+  margin: 0;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.flex {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}

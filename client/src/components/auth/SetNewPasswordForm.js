@@ -14,9 +14,7 @@ const SetNewPasswordForm = ({
   <div className="auth_main">
     <div className="auth_card">
       <div className="auth_title">
-        <Heading fontSize={[6]} color="primary">
-          Set your password
-        </Heading>
+        <h1>Set your password</h1>
         <p>Complete your account</p>
       </div>
       <ErrorMessage errorMessage={error} />
@@ -29,7 +27,7 @@ const SetNewPasswordForm = ({
       >
         <div className="auth_form_wrap">
           <div className="auth_form_input">
-            <Label htmlFor="password">Password</Label>
+            <label htmlFor="password">Password</label>
             <input
               required
               id="password"
@@ -42,9 +40,9 @@ const SetNewPasswordForm = ({
             />
           </div>
           <div className="auth_card_actions">
-            <Button className="btn btn-primary btn-full" type="submit">
+            <button className="button btn-primary btn-full" type="submit">
               Change Password
-            </Button>
+            </button>
           </div>
         </div>
       </form>

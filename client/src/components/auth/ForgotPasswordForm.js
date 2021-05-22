@@ -5,9 +5,6 @@ import { bindActionCreators } from 'redux';
 import { setAuthStatus, forgotPassword } from '../../store/actions/session';
 import ErrorMessage from './ErrorMessage';
 
-import { Heading, Button } from 'rebass';
-import { Label, Input } from '@rebass/forms';
-
 const mapStateToProps = (state) => ({
   error: state.session.error,
 });
@@ -28,9 +25,7 @@ const ForgotPasswordForm = ({
   <div className="auth_main">
     <div className="auth_card">
       <div className="auth_title">
-        <Heading fontSize={[6]} color="primary">
-          Forgot your password?
-        </Heading>
+        <h1>Forgot your password?</h1>
         <p>Fill in the form below to request a password reset</p>
       </div>
       <ErrorMessage errorMessage={error} />
@@ -43,8 +38,8 @@ const ForgotPasswordForm = ({
       >
         <div className="auth_form_wrap">
           <div className="auth_form_input">
-            <Label htmlFor="username">Username</Label>
-            <Input
+            <label htmlFor="username">Username</label>
+            <input
               required
               id="username"
               name="username"
@@ -54,17 +49,17 @@ const ForgotPasswordForm = ({
             />
           </div>
           <div className="auth_card_actions">
-            <Button className="btn btn-primary btn-full" type="submit">
+            <button className="button btn-primary btn-full" type="submit">
               Confirm
-            </Button>
+            </button>
           </div>
           <div className="auth_card_actions">
-            <Button
-              className="btn btn-secondary btn-full"
+            <button
+              className="button button-outline btn-full"
               onClick={() => setAuthStatus('signIn')}
             >
               Remembered your password?
-            </Button>
+            </button>
           </div>
         </div>
       </form>
