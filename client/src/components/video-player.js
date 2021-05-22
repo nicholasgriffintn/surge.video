@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import WebTorrent from 'webtorrent';
-import ReactPlayer from 'react-player';
 import prettyBytes from 'pretty-bytes';
 import dayjs from 'dayjs';
 
+import { useSelector } from 'react-redux';
+
 export default function VideoPlayer(props) {
+  const currentUser = useSelector((state) => state.session.currentUser);
+
   const [torrentData, setTorrentData] = useState([]);
   const [playerState, setPlayerState] = useState('initial');
   const [playerError, setPlayerError] = useState(null);
@@ -69,7 +72,7 @@ export default function VideoPlayer(props) {
           setPlayerDownloadTime(torrent.timeRemaining / 1000);
           setPlayerDownloadSpeed(torrent.downloadSpeed);
 
-          setPlayerURL(torrent.torrentFileBlobURL);
+          // setPlayerURL(torrent.torrentFileBlobURL);
         });
 
         torrent.on('wire', function (wire, addr) {
@@ -234,31 +237,33 @@ export default function VideoPlayer(props) {
               <div className="video-description">{torrentData.comment}</div>
             </>
           )}
-          <ul className="video-debug">
-            <li>Torrent ID: {torrentId}</li>
-            <li>Player State: {playerState}</li>
-            <li>Player Error: {playerError}</li>
-            <li>Player URL: {playerURL}</li>
-            <li>Player Download Progress: {playerDownloadProgess}</li>
-            <li>Player Peers Count: {playerPeersCount}</li>
-            <li>
-              Player Downloaded Size:{' '}
-              {playerDownloadSizeCount
-                ? prettyBytes(playerDownloadSizeCount)
-                : 0}
-            </li>
-            <li>
-              Player Total Download Size:{' '}
-              {playerTotalDownloadSizeCount
-                ? prettyBytes(playerTotalDownloadSizeCount)
-                : 0}
-            </li>
-            <li>Player Download Time: {playerDownloadTime}</li>
-            <li>
-              Player Download Speed:{' '}
-              {playerDownloadSpeed ? prettyBytes(playerDownloadSpeed) : 0}
-            </li>
-          </ul>
+          {currentUser && currentUser.attributes && (
+            <ul className="video-debug">
+              <li>Torrent ID: {torrentId}</li>
+              <li>Player State: {playerState}</li>
+              <li>Player Error: {playerError}</li>
+              <li>Player URL: {playerURL}</li>
+              <li>Player Download Progress: {playerDownloadProgess}</li>
+              <li>Player Peers Count: {playerPeersCount}</li>
+              <li>
+                Player Downloaded Size:{' '}
+                {playerDownloadSizeCount
+                  ? prettyBytes(playerDownloadSizeCount)
+                  : 0}
+              </li>
+              <li>
+                Player Total Download Size:{' '}
+                {playerTotalDownloadSizeCount
+                  ? prettyBytes(playerTotalDownloadSizeCount)
+                  : 0}
+              </li>
+              <li>Player Download Time: {playerDownloadTime}</li>
+              <li>
+                Player Download Speed:{' '}
+                {playerDownloadSpeed ? prettyBytes(playerDownloadSpeed) : 0}
+              </li>
+            </ul>
+          )}
         </>
       ) : (
         <p>Loading player...</p>

@@ -80,11 +80,6 @@ export default function Header() {
                 </Link>
               </li>
             )}
-            <li>
-              <Link className="nav-link" to="/video/1">
-                Sample Video
-              </Link>
-            </li>
           </ul>
         </nav>
       </div>

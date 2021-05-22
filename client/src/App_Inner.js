@@ -57,6 +57,31 @@ class AppInner extends Component {
                 </Route>
               </Switch>
             </section>
+            <footer
+              className="flex"
+              style={{
+                paddingTop: '10px',
+                paddingBottom: '10px',
+                paddingLeft: '20px',
+                paddingRight: '20px',
+              }}
+            >
+              <span>
+                Created By:{' '}
+                <a target="_blank" href="https://nicholasgriffin.dev/">
+                  Nicholas Griffin
+                </a>
+              </span>
+              <span style={{ marginLeft: '10px' }}>
+                Source Code:{' '}
+                <a
+                  target="_blank"
+                  href="https://github.com/nicholasgriffintn/surge.video"
+                >
+                  Github
+                </a>
+              </span>
+            </footer>
           </div>
         </Router>
       </div>
