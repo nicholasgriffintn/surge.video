@@ -117,3 +117,9 @@ nav ul li:last-child {
   display: -ms-flexbox;
   display: flex;
 }
+
+li {
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+}
