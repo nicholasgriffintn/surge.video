@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import WebTorrent from 'webtorrent';
 import ReactPlayer from 'react-player';
-
+import prettyBytes from 'pretty-bytes';
 import dayjs from 'dayjs';
 
 export default function VideoPlayer(props) {
@@ -13,7 +13,8 @@ export default function VideoPlayer(props) {
   const [playerURL, setPlayerURL] = useState(null);
   const [playerPosterFile, setPlayerPosterFile] = useState(null);
   const [playerDownloadProgess, setPlayerDownloadProgess] = useState(null);
-  const [playerPeersCount, setPlayerPeersCount] = useState(null);
+  const [playerPeersCount, setPlayerPeersCount] = useState(0);
+  const [playerSeedsCount, setPlayerSeedsCount] = useState(0);
   const [playerDownloadSizeCount, setPlayerDownloadedSize] = useState(null);
   const [playerTotalDownloadSizeCount, setPlayerTotalDownloadSize] =
     useState(null);
@@ -46,39 +47,27 @@ export default function VideoPlayer(props) {
           comment: torrent.comment,
         });
 
-        torrent.files.forEach(function (file) {
-          if (file.name.endsWith('.mp4')) {
-            console.debug('Video file found => ', file);
-            setPlayerFile(file);
-            file.renderTo('#VideoPlayer');
-            /* file.appendTo(
-                            '#VideoPlayerRender',
-                            {
-                              autoplay: true,
-                              controls: true,
-                            },
-                            function (err, elem) {
-                              if (err) console.error(err);
-                              console.log('New DOM node with the content', elem);
-                            }
-                          ); */
-            /* file.getBlobURL(function (err, url) {
-                              if (err) console.error(err);
-                              console.log(url);
-                              setPlayerURL(url);
-                            }); */
-          } else if (file.name.endsWith('.jpg')) {
-            setPlayerPosterFile(file);
-          }
+        // Find largest file
+        var largestFile = torrent.files[0];
+        for (var i = 1; i < torrent.files.length; i++) {
+          if (torrent.files[i].length > largestFile.length)
+            largestFile = torrent.files[i];
+        }
+
+        largestFile.appendTo('#VideoPlayerRender', {
+          autoplay: true,
+          controls: true,
         });
 
         torrent.on('download', function (bytes) {
-          setPlayerDownloadProgess((torrent.progress * 100).toFixed(1));
+          setPlayerDownloadProgess(
+            Math.round(torrent.progress * 100 * 100) / 100
+          );
           setPlayerPeersCount(torrent.numPeers);
-          setPlayerDownloadedSize((torrent.downloaded * 100).toFixed(1));
-          setPlayerTotalDownloadSize((torrent.length * 100).toFixed(1));
-          setPlayerDownloadTime((torrent.timeRemaining * 100).toFixed(1));
-          setPlayerDownloadSpeed((torrent.downloadSpeed * 100).toFixed(1));
+          setPlayerDownloadedSize(torrent.downloaded);
+          setPlayerTotalDownloadSize(torrent.length);
+          setPlayerDownloadTime(torrent.timeRemaining / 1000);
+          setPlayerDownloadSpeed(torrent.downloadSpeed);
 
           setPlayerURL(torrent.torrentFileBlobURL);
         });
@@ -126,32 +115,9 @@ export default function VideoPlayer(props) {
           <h2>Whoops, an error occured.</h2>
           <p>Error: {playerError}</p>
         </div>
-      ) : (
+      ) : playerState !== 'initial' ? (
         <>
-          {/* {playerURL && (
-            <>
-              <ReactPlayer
-                url={playerURL}
-                poster={playerPosterFile ? playerPosterFile.path : null}
-                width="100%"
-                height="640px"
-                controls={true}
-              />
-            </>
-          )} */}
-          {/* <div
-            id="VideoPlayerRender"
-            style={{ width: '100%', height: '640px' }}
-          ></div> */}
-          <video
-            poster={playerPosterFile ? playerPosterFile.path : null}
-            src=""
-            style={{ width: '100%' }}
-            id="VideoPlayer"
-            autoPlay={true}
-            preload="auto"
-            controls=""
-          ></video>
+          <div id="VideoPlayerRender" style={{ width: '100%' }}></div>
           {torrentData && (
             <>
               <div className="video-details">
@@ -174,7 +140,7 @@ export default function VideoPlayer(props) {
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <g clip-path="url(#clip0)" fill="#F07777">
+                              <g clipPath="url(#clip0)" fill="#F07777">
                                 <path d="M6.797 18.281a.586.586 0 100 1.173.586.586 0 000-1.173z" />
                                 <path d="M25.547 7.031h-5.86a.586.586 0 00-.585.586v11.25A4.106 4.106 0 0115 22.97a4.1 4.1 0 01-4.102-4.102V7.617a.586.586 0 00-.586-.586H4.453a.586.586 0 00-.586.586v11.25C3.867 25.006 8.861 30 15 30c6.139 0 11.133-4.994 11.133-11.133V7.617a.586.586 0 00-.586-.586zM5.039 8.203h4.688v4.22H5.039v-4.22zm19.922 10.664c0 5.493-4.469 9.961-9.961 9.961s-9.96-4.468-9.96-9.96v-5.274h4.687v5.273A5.272 5.272 0 0015 24.141a5.28 5.28 0 005.273-5.274v-5.273h4.688v5.273zm0-6.445h-4.688V8.203h4.688v4.219z" />
                                 <path d="M10.402 24.936a7.69 7.69 0 01-2.709-3.914.586.586 0 10-1.124.332 8.87 8.87 0 003.124 4.515.586.586 0 00.71-.933zM8.467 2.622a.586.586 0 00-.498-.278H6.573L7.321.848A.586.586 0 006.273.324L5.1 2.668a.586.586 0 00.524.848h1.396l-.748 1.496a.586.586 0 101.048.524l1.172-2.344a.586.586 0 00-.026-.57zM24.873 2.622a.586.586 0 00-.498-.278h-1.396l.748-1.496A.586.586 0 0022.68.324l-1.172 2.344a.586.586 0 00.524.848h1.396l-.748 1.496a.586.586 0 001.048.524L24.9 3.192a.586.586 0 00-.026-.57z" />
@@ -203,7 +169,8 @@ export default function VideoPlayer(props) {
                               </svg>
                             </div>
                             <div className="text">
-                              Downloading from {playerPeersCount} peers
+                              Downloading from {playerPeersCount}{' '}
+                              {playerPeersCount >= 1 ? 'peer' : 'peers'}
                             </div>
                           </div>
                           <div className="magnet-info-stat info-stat-seeding">
@@ -214,7 +181,7 @@ export default function VideoPlayer(props) {
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
                               >
-                                <g clip-path="url(#clip0)">
+                                <g clipPath="url(#clip0)">
                                   <path
                                     d="M17.648 18.358c-.378 0-.75.06-1.105.177a4.97 4.97 0 00-1.451-1.914 4.95 4.95 0 00-2.389-1.036V9.86c.998-.066 2.793-.364 4.032-1.603 1.76-1.76 1.622-4.646 1.615-4.769a.703.703 0 00-.663-.663c-.122-.007-3.008-.144-4.769 1.616a4.548 4.548 0 00-.5.596c-.257-1.037-.742-2.195-1.648-3.1C8.667-.168 5.207-.003 5.06.005a.703.703 0 00-.663.663c-.008.147-.173 3.607 1.93 5.71 1.54 1.54 3.809 1.863 4.97 1.923v7.283a4.95 4.95 0 00-2.39 1.036 4.97 4.97 0 00-1.45 1.914 3.531 3.531 0 00-4.632 3.35v1.412c0 .388.314.703.702.703h16.945a.703.703 0 00.703-.703v-1.412a3.531 3.531 0 00-3.527-3.527zm2.121 4.236H4.23v-.71A2.123 2.123 0 017.495 20.1a.703.703 0 001.064-.432A3.517 3.517 0 0112 16.94a3.517 3.517 0 013.442 2.727.703.703 0 001.064.432 2.123 2.123 0 013.264 1.786v.709zM9.776 2.93c1.168 1.168 1.445 2.986 1.506 3.962-.975-.06-2.787-.334-3.961-1.508C6.153 4.216 5.876 2.4 5.815 1.422c.975.06 2.787.334 3.96 1.508zm4.137 2.504c.87-.87 2.204-1.117 3.01-1.184-.07.807-.318 2.147-1.183 3.012-.87.87-2.205 1.117-3.01 1.184.07-.807.318-2.147 1.183-3.012z"
                                     fill="#5FBA85"
@@ -228,7 +195,8 @@ export default function VideoPlayer(props) {
                               </svg>
                             </div>
                             <div className="text">
-                              Seeding to {playerPeersCount} peers
+                              Seeding to {playerSeedsCount}{' '}
+                              {playerSeedsCount >= 1 ? 'user' : 'users'}
                             </div>
                           </div>
                         </div>
@@ -273,12 +241,27 @@ export default function VideoPlayer(props) {
             <li>Player URL: {playerURL}</li>
             <li>Player Download Progress: {playerDownloadProgess}</li>
             <li>Player Peers Count: {playerPeersCount}</li>
-            <li>Player Download Size: {playerDownloadSizeCount}</li>
-            <li>Player Total Download Size: {playerTotalDownloadSizeCount}</li>
+            <li>
+              Player Downloaded Size:{' '}
+              {playerDownloadSizeCount
+                ? prettyBytes(playerDownloadSizeCount)
+                : 0}
+            </li>
+            <li>
+              Player Total Download Size:{' '}
+              {playerTotalDownloadSizeCount
+                ? prettyBytes(playerTotalDownloadSizeCount)
+                : 0}
+            </li>
             <li>Player Download Time: {playerDownloadTime}</li>
-            <li>Player Download Speed: {playerDownloadSpeed}</li>
+            <li>
+              Player Download Speed:{' '}
+              {playerDownloadSpeed ? prettyBytes(playerDownloadSpeed) : 0}
+            </li>
           </ul>
         </>
+      ) : (
+        <p>Loading player...</p>
       )}
     </div>
   );

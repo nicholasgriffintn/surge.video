@@ -182,6 +182,7 @@ nav ul li:last-child {
 .magnet-info-block .magnet-info-stats {
   padding-left: 10px;
   padding-right: 10px;
+  overflow: auto;
 }
 
 .magnet-info-block .magnet-info-stats .magnet-info-stat {
