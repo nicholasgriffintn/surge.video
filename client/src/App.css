@@ -118,8 +118,27 @@ nav ul li:last-child {
   display: flex;
 }
 
-li {
+.App-Video-Player-Wrapper ul.video-debug li {
   text-overflow: ellipsis;
   width: 100%;
   overflow: hidden;
+}
+
+.App-Video-Player-Wrapper video {
+  border-radius: 14px;
+}
+
+.App-Video-Player-Inner {
+  position: relative;
+}
+
+.App-Video-Player-Inner .video-debug {
+  position: absolute;
+  top: 0;
+  right: 0;
+  max-width: 320px;
+  max-height: 300px;
+  background: rgb(0 0 0 / 52%);
+  overflow: scroll;
+  padding: 10px 20px;
 }
