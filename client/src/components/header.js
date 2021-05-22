@@ -60,13 +60,13 @@ export default function Header() {
                   marginRight: 'auto',
                 }}
               />
-              <Button
-                className="button btn-secondary btn-header"
+              <button
+                className="button button-outline btn-header"
                 type="button"
                 onClick={() => dispatch({ type: 'LOGOUT' })}
               >
-                LOGOUT
-              </Button>
+                Log out
+              </button>
             </>
           )}
           <ul>
