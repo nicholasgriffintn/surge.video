@@ -16,17 +16,7 @@ const mapStateToProps = (state) => ({
 const Auth = ({ header, logoText, authState }) => (
   <>
     {!header ? (
-      <div
-        className="homepage_na"
-        style={{
-          width: '100vw',
-          height: '100vh',
-          background: 'url(https://cdn.nicholasgriffin.dev/map.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
+      <div className="homepage_na">
         <Box
           className="auth_box"
           sx={{
@@ -58,7 +48,7 @@ const Auth = ({ header, logoText, authState }) => (
         </Box>
       </div>
     ) : (
-      <button>Sign In</button>
+      <button className="btn btn-primary btn-header-signin">Sign In</button>
     )}
   </>
 );

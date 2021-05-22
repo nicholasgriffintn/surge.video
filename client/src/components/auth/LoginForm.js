@@ -22,7 +22,7 @@ const LoginForm = ({
     <div className="auth_card">
       <div className="auth_title">
         <Heading fontSize={[6]} color="primary">
-          Start logging your travels today!
+          Sign in to start sharing today
         </Heading>
         <p>Enter your credentials below to sign in</p>
       </div>
