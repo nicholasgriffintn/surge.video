@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.4.1",
+    "@emotion/react": "^11.5.0",
     "aws-amplify": "^4.3.2",
     "dayjs": "^1.10.6",
     "lodash": "^4.17.21",
